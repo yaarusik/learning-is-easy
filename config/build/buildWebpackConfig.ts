@@ -20,7 +20,7 @@ return {
   module: {
     rules: buildLoaders(options),
   },
-  resolve: buildResolvers(),
+  resolve: buildResolvers(options),
   // позволяет увидеть где в коде у нас произошла ошибка, иначе всегда показывал бы на файл bundle.js
   devtool: isDev ? 'inline-source-map' : undefined,
   devServer: isDev ? buildDevServer(options) : undefined,
