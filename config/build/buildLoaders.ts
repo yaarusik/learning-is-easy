@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { buildCssLoader } from '../build/loaders/buildCssLoader';
 import { BuildOptions } from './types/config';
 
 export function buildLoaders({ isDev }: BuildOptions): webpack.RuleSetRule[] {
@@ -14,34 +14,6 @@ export function buildLoaders({ isDev }: BuildOptions): webpack.RuleSetRule[] {
             {
                 loader: 'file-loader',
             },
-        ],
-    };
-
-    const cssLoader = {
-        test: /\.s[ac]ss$/i,
-        use: [
-            // Creates `style` nodes from JS strings
-            isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
-            // Translates CSS into CommonJS
-            {
-                loader: 'css-loader',
-                options: {
-                    modules: {
-                        // Смотрит на файлы только с расширением - .module.
-                        // Можно было и регулярное выражение указать вместо функции
-                        auto: (resPath: string) => resPath.includes('.module.'),
-                        // делаем в dev разработке нормальные читаемые имена классов,
-                        // а в prod сгенерированные(8 - количество символов)
-                        localIdentName: isDev
-                        // в названии стилей будет путь до компонента - название класса и
-                        // hash - "src-components-Counter-module__button--Kx16R"
-                            ? '[path][name]__[local]--[hash:base64:5]'
-                            : '[hash:base64:8]',
-                    },
-                },
-            },
-            // Compiles Sass to CSS
-            'sass-loader',
         ],
     };
 
@@ -69,5 +41,5 @@ export function buildLoaders({ isDev }: BuildOptions): webpack.RuleSetRule[] {
         exclude: /node_modules/,
     };
 
-    return [fileLoader, svgLoader, babelLoader, typescriptLoader, cssLoader];
+    return [fileLoader, svgLoader, babelLoader, typescriptLoader, buildCssLoader(isDev)];
 }
