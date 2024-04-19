@@ -20,6 +20,10 @@ export const Clear: Story = {
     render: () => <Button theme={ButtonTheme.CLEAR}>button</Button>,
 };
 
+export const ClearInverted: Story = {
+    render: () => <Button theme={ButtonTheme.CLEAR_INVERTED}>button</Button>,
+};
+
 export const Outline: Story = {
     render: () => <Button theme={ButtonTheme.OUTLINE}>button</Button>,
 };
